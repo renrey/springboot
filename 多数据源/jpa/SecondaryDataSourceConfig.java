@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * 第二數據源配置repository，entityManagerFactory，entityManager,transactionManager
+ * basePackages使用该数据源的repository的位置
  * @author rey
  */
 @Configuration

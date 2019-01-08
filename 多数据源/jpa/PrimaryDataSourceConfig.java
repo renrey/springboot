@@ -28,6 +28,7 @@ import java.util.Map;
 
 /**
  * 主數據源配置repository，entityManagerFactory，entityManager,transactionManager
+ * basePackages使用该数据源的repository的位置
  * @author rey
  */
 @Configuration
@@ -63,7 +64,7 @@ public class PrimaryDataSourceConfig {
         return builder
                 .dataSource(dataSource)
                 .properties(getVendorProperties(dataSource))
-                .packages("com.m.service") //设置实体类所在位置
+                .packages("com.m.service") //设置该数据源的实体类所在位置
                 .persistenceUnit("primaryPersistenceUnit")
                 .build();
     }
@@ -90,8 +91,14 @@ public class PrimaryDataSourceConfig {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
+    /**
+     * 配置主数据源jdbc
+     * @Primary
+     * @param entityManagerFactory
+     * @return
+     */
     @Bean(name = "primaryJdbcTemplate")
-    public JdbcTemplate primaryJdbcTemplate() {
+    public JdbcTemplate primaryJdbcTemplate(@Qualifier("primaryDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
